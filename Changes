@@ -1,5 +1,8 @@
 Revision history for Perl extension Archive-Zip
 
+1.44 Fri 23 Jan 2015
+    - Win32 with ZIP executable cannot create temp file [github.com/revhippie]
+
 1.43 Wed 14 Jan 2015
     - Restore 101374 - failing tests were not regressions.
 
