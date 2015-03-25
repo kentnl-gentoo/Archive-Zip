@@ -6,7 +6,7 @@ use strict;
 use vars qw( $VERSION @ISA );
 
 BEGIN {
-    $VERSION = '1.45';
+    $VERSION = '1.46';
     @ISA     = qw( Archive::Zip );
 
     if ($^O eq 'MSWin32') {
@@ -1100,7 +1100,6 @@ sub _writeData {
 
             last if $status == AZ_STREAM_END;
         }
-        $self->{'compressedSize'} = $self->_writeOffset();
     }
     return AZ_OK;
 }
