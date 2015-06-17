@@ -13,7 +13,7 @@ use Cwd;
 use vars qw( $VERSION @ISA );
 
 BEGIN {
-    $VERSION = '1.46';
+    $VERSION = '1.47';
     @ISA     = qw( Archive::Zip );
 
     if ($^O eq 'MSWin32') {
@@ -656,6 +656,15 @@ sub _readEndOfCentralDirectory {
         $self->{'centralDirectoryOffsetWRTStartingDiskNumber'},
         $zipfileCommentLength
     ) = unpack(END_OF_CENTRAL_DIRECTORY_FORMAT, $header);
+
+    if ($self->{'diskNumber'} == 0xFFFF ||
+           $self->{'diskNumberWithStartOfCentralDirectory'} == 0xFFFF ||
+           $self->{'numberOfCentralDirectoriesOnThisDisk'} == 0xFFFF ||
+           $self->{'numberOfCentralDirectories'} == 0xFFFF ||
+           $self->{'centralDirectorySize'} == 0xFFFFFFFF ||
+           $self->{'centralDirectoryOffsetWRTStartingDiskNumber'} == 0xFFFFFFFF) {
+        return _formatError("zip64 not supported");
+    }
 
     if ($zipfileCommentLength) {
         my $zipfileComment = '';
