@@ -6,7 +6,7 @@ use strict;
 use vars qw( $VERSION @ISA );
 
 BEGIN {
-    $VERSION = '1.53';
+    $VERSION = '1.55';
     @ISA     = qw( Archive::Zip );
 
     if ($^O eq 'MSWin32') {

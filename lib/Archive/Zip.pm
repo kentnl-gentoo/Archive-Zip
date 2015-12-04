@@ -14,7 +14,7 @@ use FileHandle          ();
 use vars qw( $VERSION @ISA );
 
 BEGIN {
-    $VERSION = '1.53';
+    $VERSION = '1.55';
 
     require Exporter;
     @ISA = qw( Exporter );
@@ -517,6 +517,7 @@ sub tempFile {
         $dir ? (DIR => $dir) : ());
     return (undef, undef) unless $fh;
     my ($status, $newfh) = _newFileHandle($fh, 'w+');
+    $fh->close();
     return ($newfh, $filename);
 }
 
