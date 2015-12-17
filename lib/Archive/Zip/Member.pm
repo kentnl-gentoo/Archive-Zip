@@ -6,7 +6,7 @@ use strict;
 use vars qw( $VERSION @ISA );
 
 BEGIN {
-    $VERSION = '1.55';
+    $VERSION = '1.56';
     @ISA     = qw( Archive::Zip );
 
     if ($^O eq 'MSWin32') {
@@ -229,6 +229,15 @@ sub fileName {
         $self->{'fileName'} = $newName;
     }
     return $self->{'fileName'};
+}
+
+sub fileNameAsBytes {
+    my $self  = shift;
+    my $bytes = $self->{'fileName'};
+    if($self->{'bitFlag'} & 0x800){
+        $bytes = Encode::encode_utf8($bytes);
+    }
+    return $bytes;
 }
 
 sub lastModFileDateTime {
@@ -684,7 +693,7 @@ sub head {
               : $self->compressedSize(),    # may need to be re-written later
             $self->uncompressedSize(),
           ),
-      length($self->fileName()),
+      length($self->fileNameAsBytes()),
       length($self->localExtraField());
 }
 
@@ -706,7 +715,7 @@ sub _writeLocalFileHeader {
 
     # Check for a valid filename or a filename equal to a literal `0'
     if ($self->fileName() || $self->fileName eq '0') {
-        $self->_print($fh, $self->fileName())
+        $self->_print($fh, $self->fileNameAsBytes())
           or return _ioError("writing local header filename");
     }
     if ($self->localExtraField()) {
@@ -729,7 +738,7 @@ sub _writeCentralDirectoryFileHeader {
     my ($fileNameLength, $extraFieldLength, $fileCommentLength);
     {
         use bytes;
-        $fileNameLength    = length($self->fileName());
+        $fileNameLength    = length($self->fileNameAsBytes());
         $extraFieldLength  = length($self->cdExtraField());
         $fileCommentLength = length($self->fileComment());
     }
@@ -756,7 +765,7 @@ sub _writeCentralDirectoryFileHeader {
     $self->_print($fh, $header)
       or return _ioError("writing central directory header");
     if ($fileNameLength) {
-        $self->_print($fh, $self->fileName())
+        $self->_print($fh, $self->fileNameAsBytes())
           or return _ioError("writing central directory header signature");
     }
     if ($extraFieldLength) {
