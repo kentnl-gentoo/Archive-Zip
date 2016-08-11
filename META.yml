@@ -3,11 +3,12 @@ abstract: 'Provide an interface to ZIP archive files.'
 author:
   - 'Ned Konz <perl@bike-nomad.com>'
 build_requires:
+  ExtUtils::MakeMaker: '0'
   Test::MockModule: '0'
   Test::More: '0.88'
 configure_requires:
   ExtUtils::MakeMaker: '0'
-dynamic_config: 1
+dynamic_config: 0
 generated_by: 'ExtUtils::MakeMaker version 7.1, CPAN::Meta::Converter version 2.142060'
 license: perl
 meta-spec:
@@ -32,5 +33,6 @@ requires:
   Time::Local: '0'
   perl: '5.006'
 resources:
-  repository: https://github.com/redhotpenguin/perl-Archive-Zip-svn
-version: '1.58'
+  bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Archive-Zip
+  repository: https://github.com/redhotpenguin/perl-Archive-Zip.git
+version: '1.59'
